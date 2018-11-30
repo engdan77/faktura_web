@@ -17,8 +17,9 @@ if not configuration.get('app.production'):
     _app = request.application
     response.menu += [
         (T('Skapa'), False, '#', [
+            (T('Företag'), False, URL('company', 'create')),
             (T('Kund'), False, URL('client', 'create')),
-            (T('Service'), False, URL('service', 'create')),
+            (T('Produkt'), False, URL('service', 'create')),
             (T('Faktura'), False, URL('invoice', 'create')),
 
         ])

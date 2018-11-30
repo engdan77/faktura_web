@@ -149,24 +149,43 @@ if configuration.get('scheduler.enabled'):
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
 
+db.define_table('company',
+                Field('name', 'string', label='Namn'),
+                Field('address', 'string', label='Adress'),
+                Field('zip_code', 'string', label='Postnummer'),
+                Field('city', 'string', label='Stad'),
+                Field('phone_number', 'string', label='Telefonnummer'),
+                Field('email', 'string', label='Epost'),
+                Field('vat', 'string', label='VAT-nr'),
+                Field('account', 'string', label='Bankgiro'),
+                Field('payment_terms', 'integer', label='Betalingsvillkor i dagar'),
+                Field('expiration_fee', 'integer', label='Dröjsmålsränta %'),
+                Field('ftax', 'boolean', label='Godkänd för f-skatt'))
+
 db.define_table('customer',
-    Field('name', 'string', label='Namn'),
-    Field('adress', 'string', label='Address')
-    )
+                Field('name', 'string', label='Namn'),
+                Field('address', 'string', label='Adress'),
+                Field('zip_code', 'string', label='Postnummer'),
+                Field('city', 'string', label='Stad'))
+
 db.define_table('invoice',
-    Field('customer', 'reference customer', label='Kund'),
-    Field('created_on', 'date', label='Datum'),
+    Field('company_id', 'reference company', label='Leverantör', requires=IS_IN_DB(db, db.company.id, '%(name)s')),
+    Field('customer_id', 'reference customer', label='Kund', requires=IS_IN_DB(db, db.customer.id, '%(name)s')),
+    Field('created_on', 'date', label='Leveransdatum'),
     Field('expires_on', 'date', label='Förfallodatum'),
-    Field('tax_percentage', 'integer', label='Moms %')
-    )
+    Field('tax_percentage', 'integer', label='Moms'),
+    Field('paid', 'boolean', label='Betalad'),
+    Field('deleted', 'boolean', label='Mackulerad'))
+
 db.define_table('service',
-                Field('name', 'string', label='Service'),
-                Field('cost_per', 'string', label='á pris'))
+    Field('name', 'string', label='Produkt'),
+    Field('cost_per', 'string', label='á pris'))
+
+
 db.define_table('invoice_service_mapping',
-                Field('invoice', db.invoice),
-                Field('service', db.service),
-                Field('quantity', 'integer'))
-db.invoice.customer.requires = IS_IN_DB(db,db.customer.id,'%(name)s')
+    Field('invoice_id', 'reference invoice', label='Fakturanummer'),
+    Field('service_id', 'reference service', label='Produkt', requires=IS_IN_DB(db, db.service.id, '%(name)s')),
+    Field('quantity', 'integer', label='Antal'))
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
