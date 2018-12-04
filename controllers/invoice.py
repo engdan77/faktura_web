@@ -17,6 +17,16 @@ def create():
     return dict(form=form, grid_invoice=grid_invoice)
 
 def service_to_invoice():
+    # This part used when removing items
+    if 'remove_id' in request.vars.keys():
+        remove_ids = request.vars['remove_id']
+        remove_ids = remove_ids if type(remove_ids) is list else [remove_ids,]
+        print(remove_ids)
+        for row in db(db.invoice_service_mapping.id.belongs(remove_ids)).select():
+            row.delete_record()
+        response.flash = '{} produkt(er) tagits bort'.format(len(remove_ids))
+
+    # this part for display the SQLform
     invoice_id = request.vars['invoice_id']
     db.invoice_service_mapping.invoice_id.default = invoice_id
     db.invoice_service_mapping.invoice_id.writable = False
@@ -29,6 +39,7 @@ def service_to_invoice():
         db.invoice_service_mapping.insert(**db.invoice_service_mapping._filter_fields(form.vars))
         response.flash = 'Lagt till produkt'
 
+    # This part for displaying the grid
     db.service.id.writable = False
     db.service.id.readable = False
     db.invoice_service_mapping.id.writable = False
@@ -45,8 +56,8 @@ def service_to_invoice():
                                 csv=False,
                                 left=(db.service.on(db.invoice_service_mapping.service_id == db.service.id)),
                                  selectable=[('Ta bort',
-                                              lambda ids: redirect(URL('default', 'mapping_multiple',
-                                                                       vars=dict(id=ids))))]
+                                              lambda ids: redirect(URL('invoice', 'service_to_invoice',
+                                                                       vars=dict(remove_id=ids))))]
                                 )
     [button.__setitem__(0, 'Titta') for button in grid_services.elements('span[title=%s]' % T('View'))]
     [button.__setitem__(0, 'Ta bort') for button in grid_services.elements('span[title=%s]' % T('Delete'))]
