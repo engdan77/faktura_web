@@ -1,6 +1,8 @@
 {{extend 'layout.html'}}
 
-{{=form}}
-{{=HR()}}
 {{=H1('Produkter')}}
 {{=grid_services}}
+{{=BUTTON_TO(T('Gå tillbaka'), URL(request.application,'invoice','create'))}}
+{{=HR()}}
+{{=form}}
+
