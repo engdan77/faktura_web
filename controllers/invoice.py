@@ -49,7 +49,9 @@ def create():
                                 create=False,
                                 details=False,
                                 csv=False,
-                                links=[lambda row: A('Produkter', _href=URL("invoice", "service_to_invoice",
+                                links=[dict(header='Kostnad (kr)', body=lambda row: sum([ list(r['_extra'].values())[0] for r in db(row.invoice.id == db.invoice_service_mapping.invoice_id)
+                                            .select(db.service.cost_per * db.invoice_service_mapping.quantity)])),
+                                       lambda row: A('Produkter', _href=URL("invoice", "service_to_invoice",
                                                                             vars={'invoice_id': row.invoice.id}))]
                                 )
     [button.__setitem__(0, 'Titta') for button in grid_invoice.elements('span[title=%s]' % T('View'))]

@@ -173,7 +173,7 @@ db.define_table('invoice',
     Field('customer_id', 'reference customer', label='Kund', requires=IS_IN_DB(db, db.customer.id, '%(name)s')),
     Field('created_on', 'date', label='Leveransdatum'),
     Field('expires_on', 'date', label='Förfallodatum'),
-    Field('tax_percentage', 'integer', label='Moms'),
+    Field('tax_percentage', 'integer', label='Moms (%)'),
     Field('paid', 'boolean', label='Betalad'),
     Field('deleted', 'boolean', label='Mackulerad'))
 
@@ -186,6 +186,15 @@ db.define_table('invoice_service_mapping',
     Field('invoice_id', 'reference invoice', label='Fakturanummer'),
     Field('service_id', 'reference service', label='Produkt', requires=IS_IN_DB(db, db.service.id, '%(name)s')),
     Field('quantity', 'integer', label='Antal'))
+
+# add price of invoice
+# db.invoice.total_price = Field.Virtual('total_price', lambda row: db((db.invoice_service_mapping.invoice_id==row.id)).count())
+
+# class MyVirtualFields(object):
+#     def total_price(self):
+#         return lambda self=self: self.invoice.tax_percentage*2
+#
+# db.invoice.virtualfields.append(MyVirtualFields())
 
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
