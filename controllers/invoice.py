@@ -103,6 +103,7 @@ def service_to_invoice():
                                                                        vars=dict(remove_id=ids))))]
                                 )
     [button.__setitem__(0, 'Titta') for button in grid_services.elements('span[title=%s]' % T('View'))]
+    [button.__setitem__(0, 'Ändra') for button in grid_services.elements('span[title=%s]' % T('Edit'))]
     [button.__setitem__(0, 'Ta bort') for button in grid_services.elements('span[title=%s]' % T('Delete'))]
     [button.__setitem__(0, 'Tillbaka') for button in grid_services.elements('span[title=%s]' % T('Back'))]
     return dict(form=form, grid_services=grid_services)
