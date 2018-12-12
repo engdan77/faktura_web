@@ -28,7 +28,7 @@ def create():
 
     disable_field({db.company: ['id', 'address', 'zip_code', 'city', 'phone_number', 'email', 'vat',
                                 'account', 'payment_terms', 'expiration_fee', 'ftax'],
-                   db.invoice: ['company_id', 'id', 'customer_id'],
+                   db.invoice: ['company_id', 'customer_id'],
                    db.customer: ['id', 'address', 'zip_code', 'city', 'address']})
 
     grid_invoice = SQLFORM.grid(db.invoice.deleted==False,
