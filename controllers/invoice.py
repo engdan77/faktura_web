@@ -56,7 +56,10 @@ def create():
                                             [list(r['_extra'].values())[0] for r in db(row.invoice.id == db.invoice_service_mapping.invoice_id)
                                             .select(db.service.cost_per * db.invoice_service_mapping.quantity)]) * (row.invoice.tax_percentage / 100))),
                                        lambda row: A('Produkter', _href=URL("invoice", "service_to_invoice",
-                                                                            vars={'invoice_id': row.invoice.id}))]
+                                                                            vars={'invoice_id': row.invoice.id})),
+                                       lambda row: A('Skriv ut faktura', _href=URL("invoice", "print_invoice",
+                                                                            vars={'invoice_id': row.invoice.id}))
+                                       ]
                                 )
     [button.__setitem__(0, 'Titta') for button in grid_invoice.elements('span[title=%s]' % T('View'))]
     [button.__setitem__(0, 'Ta bort') for button in grid_invoice.elements('span[title=%s]' % T('Delete'))]
@@ -111,3 +114,50 @@ def service_to_invoice():
     [button.__setitem__(0, 'Ta bort') for button in grid_services.elements('span[title=%s]' % T('Delete'))]
     [button.__setitem__(0, 'Tillbaka') for button in grid_services.elements('span[title=%s]' % T('Back'))]
     return dict(form=form, grid_services=grid_services)
+
+
+def print_invoice():
+    from invoice_writer import create_pdf
+    import os
+    from io import BytesIO
+
+    invoice_file = os.path.join(request.folder, 'static', 'faktura.pdf')
+
+    invoice_id = request.vars['invoice_id']
+    response.flash = 'Skriv ut faktura {}'.format(invoice_id)
+    r = db((db.invoice.id == invoice_id) & (db.invoice.company_id == db.company.id) & (db.invoice.customer_id == db.customer.id)).select().first()
+
+    purchased_services_query = db((db.invoice_service_mapping.service_id == db.service.id) & (db.invoice_service_mapping.invoice_id == invoice_id)).select()
+    purchased_service = []
+    for row in purchased_services_query:
+        purchased_service.append({'name': row.service.name,
+                                  'quantity': row.invoice_service_mapping.quantity,
+                                  'cost_per': row.service.cost_per})
+
+    d = {'invoice_id': r.invoice.id,
+         'created_on': r.invoice.created_on,
+         'expires_on': r.invoice.expires_on,
+         'paid': r.invoice.paid,
+         'tax_percantage': r.invoice.tax_percentage,
+         'company_name': r.company.name,
+         'company_address': r.company.address,
+         'company_zip_code': r.company.zip_code,
+         'company_city': r.company.city,
+         'company_phone_number': r.company.phone_number,
+         'company_vat': r.company.vat,
+         'company_account': r.company.account,
+         'company_payment_terms': r.company.payment_terms,
+         'company_expiration_fee': r.company.expiration_fee,
+         'company_ftax': r.company.ftax,
+         'company_email': r.company.email,
+         'customer_id': r.customer.id,
+         'customer_name': r.customer.name,
+         'customer_address': r.customer.address,
+         'customer_zip_code': r.customer.zip_code,
+         'customer_city': r.customer.city,
+         'item_list': purchased_service}
+    create_pdf(invoice_file, d)
+    data = open(invoice_file, "rb").read()
+    response.headers['Content-Type'] = 'application/pdf'
+    #return dict(vars=locals())
+    return response.stream(BytesIO(data))
