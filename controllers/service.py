@@ -1,5 +1,5 @@
 def create():
-    form = SQLFORM.factory(db.service, formstyle='table3cols', submit_button='Lägg till')
+    form = SQLFORM.factory(db.service, formstyle='table3cols', submit_button='Lägg till').process()
     if form.accepted:
         response.flash = 'Produkt skapad'
     grid = SQLFORM.grid(db.service, editable=True, deletable=False, searchable=False, create=False, csv=False)

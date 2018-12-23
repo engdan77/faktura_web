@@ -179,7 +179,7 @@ db.define_table('invoice',
 
 db.define_table('service',
     Field('name', 'string', label='Produkt'),
-    Field('cost_per', 'string', label='á pris'))
+    Field('cost_per', 'integer', label='á pris'))
 
 
 db.define_table('invoice_service_mapping',
