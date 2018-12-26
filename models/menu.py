@@ -25,7 +25,7 @@ if not configuration.get('app.production'):
          (T('System administration'), False, '#', [
              (T('Säkerhetskopiera databasen'), False, URL('admin', 'export_db_to_csv')),
           #   (T('Återställ från säkerhetskopia'), False, URL('admin', 'import_and_sync')),
-          #   (T('Töm databasen'), False, URL('admin', 'reset_database'))
+             (T('Ta bort allt och börja om'), False, URL('admin', 'reset_database'))
           ])
     ]
 

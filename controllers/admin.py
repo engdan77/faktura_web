@@ -32,27 +32,36 @@ def import_and_sync():
 
 
 def reset_database():
-    exclude = []
-    import os
-    import sys
-    import glob
-    for tablename in db.tables[:]:
-        if tablename in exclude or tablename[0:4]=="auth":
-            print("keep "+tablename)
-        else:
-            table = db[tablename]
-            try:
-                print("delete "+tablename)
-                filelist = os.path.join(request.folder, 'databases', f'*{tablename}.table')
-                print(filelist)
-                filelist = glob.glob(filelist)
-                print(filelist)
-                if len(filelist) > 0:
-                    os.remove(filelist[0])
-                table.drop()
-            except Exception as e:
-                print("failed to delete "+tablename)
-                print(e)
-                print(sys.exc_info())
-    db.commit()
-    return 'Database reset'
+    if 'reset' in request.vars.keys():
+        exclude = []
+        import os
+        import sys
+        import glob
+        for tablename in db.tables[:]:
+            if tablename in exclude or tablename[0:4] == 'auth':
+                print(f"keep {tablename}")
+            else:
+                table = db[tablename]
+                print(f'table found {table}')
+                try:
+                    print(f'delete {tablename}')
+                    t = getattr(db, tablename)
+                    t.drop()
+                    filelist = os.path.join(request.folder, 'databases', f'*{tablename}.table')
+                    print(filelist)
+                    filelist = glob.glob(filelist)
+                    print(filelist)
+                    if len(filelist) > 0:
+                        os.remove(filelist[0])
+                except Exception as e:
+                    print(f'failed to delete {tablename}')
+                    print(e)
+                    print(sys.exc_info())
+        db.commit()
+        form = redirect(URL('default', 'index'))
+    else:
+        form = SQLFORM.factory(Field('reset', 'boolean', label='Rensa databas?'))
+        btn = form.element("input", _type="submit")
+        btn['_value'] = T("Fortsätt")
+        btn['_onclick'] = "return confirm('Är du säker på att radera och börja om?');"
+    return dict(form=form)
