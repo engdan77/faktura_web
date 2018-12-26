@@ -34,9 +34,9 @@ mkdir /etc/nginx/conf.d/web2py
 
 RUN mkdir /etc/nginx/sites-available/
 RUN mkdir /etc/nginx/sites-enabled/
-ADD ../../../docker_files/gzip_static.conf /etc/nginx/conf.d/web2py/gzip_static.conf
-ADD ../../../docker_files/gzip.conf /etc/nginx/conf.d/web2py/gzip.conf
-ADD ../../../docker_files/web2py.conf /etc/nginx/conf.d/
+ADD docker_files/gzip_static.conf /etc/nginx/conf.d/web2py/gzip_static.conf
+ADD docker_files/gzip.conf /etc/nginx/conf.d/web2py/gzip.conf
+ADD docker_files/web2py.conf /etc/nginx/conf.d/
 
 RUN rm /etc/nginx/conf.d/default.conf && \
 mkdir /etc/nginx/ssl && cd /etc/nginx/ssl && \
@@ -47,9 +47,9 @@ openssl x509 -noout -fingerprint -text < web2py.crt > web2py.info && \
 mkdir /etc/uwsgi && \
 mkdir /var/log/uwsgi
 
-ADD ../../../docker_files/web2py.ini /etc/uwsgi/web2py.ini
+ADD docker_files/web2py.ini /etc/uwsgi/web2py.ini
 
-ADD ../../../docker_files/supervisor-app.ini /etc/supervisor.d/
+ADD docker_files/supervisor-app.ini /etc/supervisor.d/
 
 RUN cd $INSTALL_DIR && \
 wget http://web2py.com/examples/static/web2py_src.zip && \
