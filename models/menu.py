@@ -17,10 +17,10 @@ if not configuration.get('app.production'):
     _app = request.application
     response.menu += [
         (T('Skapa/Ändra'), False, '#', [
-            (T('Företag'), False, URL('company', 'create')),
+            (T('Mitt företag'), False, URL('company', 'create')),
             (T('Kund'), False, URL('client', 'create')),
-            (T('Produkt'), False, URL('service', 'create')),
-            (T('Faktura'), False, URL('invoice', 'create')),
+            (T('Produkter'), False, URL('service', 'create')),
+            (T('Fakturor'), False, URL('invoice', 'create')),
         ]),
          (T('System administration'), False, '#', [
              (T('Säkerhetskopiera databasen'), False, URL('admin', 'export_db_to_csv')),
