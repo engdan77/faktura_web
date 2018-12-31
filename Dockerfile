@@ -72,7 +72,7 @@ ADD modules web2py/applications/faktura_web/modules
 ADD private web2py/applications/faktura_web/private
 
 RUN find web2py/applications/faktura_web/ -iname *.pyc -exec rm {} \;
-RUN chown -R nginx:nginx web2py/applications/faktura_web/
+RUN chown -R nginx:nginx web2py/applications/faktura_web
 
 RUN apk --update add libxml2-dev libxslt-dev libffi-dev gcc musl-dev libgcc openssl-dev curl
 RUN apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev
