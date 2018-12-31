@@ -157,7 +157,7 @@ db.define_table('company',
                 Field('phone_number', 'string', label='Telefonnummer'),
                 Field('email', 'string', label='Epost'),
                 Field('vat', 'string', label='Org. nummer'),
-                Field('account', 'string', label='Bankgiro'),
+                Field('account', 'string', label='Konto nummer'),
                 Field('payment_terms', 'integer', label='Betalingsvillkor i dagar'),
                 Field('expiration_fee', 'integer', label='Dröjsmålsränta %'),
                 Field('ftax', 'boolean', label='Godkänd för f-skatt'))

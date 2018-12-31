@@ -1,8 +1,11 @@
 def create():
     form = SQLFORM.factory(db.service, formstyle='table3cols', submit_button='Lägg till').process()
     if form.accepted:
-        db.service.insert(**db.service._filter_fields(form.vars))
-        response.flash = 'Produkt skapad'
+        if not form.vars['name'] == '' and not form.vars['cost_per'] is type(int):
+            db.service.insert(**db.service._filter_fields(form.vars))
+            response.flash = 'Produkt skapad'
+        else:
+            response.flash = 'Du har angett fel information'
     grid = SQLFORM.grid(db.service, editable=True, deletable=False, searchable=False, create=False, csv=False)
     [button.__setitem__(0, 'Titta') for button in grid.elements('span[title=%s]' % T('View'))]
     [button.__setitem__(0, 'Ändra') for button in grid.elements('span[title=%s]' % T('Edit'))]
