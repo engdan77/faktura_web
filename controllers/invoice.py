@@ -78,8 +78,11 @@ def service_to_invoice():
 
     # this part for display the SQLform
     invoice_id = request.vars['invoice_id']
-    # db.invoice_service_mapping.invoice_id.default = invoice_id
-    # db.invoice_service_mapping.invoice_id.writable = False
+
+    # set this as default
+    db.invoice_service_mapping.invoice_id.default = invoice_id
+    db.invoice_service_mapping.invoice_id.writable = False
+
     form = SQLFORM.factory(db.invoice_service_mapping,
                            formstyle='table3cols',
                            submit_button='Lägg till',
