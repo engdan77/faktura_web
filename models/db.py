@@ -184,7 +184,7 @@ db.define_table('service',
 
 db.define_table('invoice_service_mapping',
     Field('invoice_id', 'reference invoice', label='Fakturanummer'),
-    Field('service_id', 'reference service', label='Produkt', requires=IS_IN_DB(db, db.service.id, '%(name)s')),
+    Field('service_id', 'reference service', label='Produkt', requires=IS_IN_DB(db, db.service.id, '%(name)s - %(cost_per)s')),
     Field('quantity', 'integer', label='Antal'))
 
 # add price of invoice
