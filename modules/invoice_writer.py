@@ -69,5 +69,5 @@ def create_pdf(invoice_file, input_dict):
 
     # Optional
     doc.set_bottom_tip(
-        f"Email: {d['company_email']}<br />Kontonummer: {d['company_account']}<br />Vid frågor kontakt på {d['company_phone_number']}.")
+        f"Email: {d['company_email']}<br />Kontonummer: {d['company_account']}<br />Godkänd för F-skatt<br />Vid frågor kontakt på {d['company_phone_number']}.")
     doc.finish()
