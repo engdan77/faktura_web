@@ -78,8 +78,8 @@ def service_to_invoice():
 
     # this part for display the SQLform
     invoice_id = request.vars['invoice_id']
-    db.invoice_service_mapping.invoice_id.default = invoice_id
-    db.invoice_service_mapping.invoice_id.writable = False
+    # db.invoice_service_mapping.invoice_id.default = invoice_id
+    # db.invoice_service_mapping.invoice_id.writable = False
     form = SQLFORM.factory(db.invoice_service_mapping,
                            formstyle='table3cols',
                            submit_button='Lägg till',
@@ -98,13 +98,12 @@ def service_to_invoice():
     db.invoice_service_mapping.invoice_id.readable = False
     db.invoice_service_mapping.service_id.writable = False
     db.invoice_service_mapping.service_id.readable = False
-    grid_services = SQLFORM.grid(db.invoice_service_mapping,
+    grid_services = SQLFORM.grid(db((db.invoice_service_mapping.invoice_id == invoice_id) & (db.invoice_service_mapping.service_id == db.service.id)),
                                 editable=True,
                                 deletable=False,
                                 searchable=False,
                                 create=False,
                                 csv=False,
-                                left=(db.service.on(db.invoice_service_mapping.service_id == db.service.id)),
                                 selectable=[('Ta bort',
                                               lambda ids: redirect(URL('invoice', 'service_to_invoice',
                                                                        vars=dict(remove_id=ids))))]
