@@ -31,9 +31,18 @@ def create():
                    db.invoice: ['company_id', 'customer_id'],
                    db.customer: ['id', 'address', 'zip_code', 'city', 'address']})
 
-    grid_invoice = SQLFORM.grid(db.invoice.deleted==False,
-                                left=(db.customer.on(db.invoice.customer_id == db.customer.id),
-                                      db.company.on(db.invoice.company_id == db.company.id)),
+    def count_costs(invoice_row):
+        total_cost = 0
+        for r in db(db.invoice_service_mapping.invoice_id == invoice_row.invoice.id).select():
+            quantity = r.quantity
+            service_id = r.service_id
+            cost_per = db(db.service.id == service_id).select(db.service.cost_per).first().cost_per
+            total_cost += cost_per * quantity
+            tax_percantage = invoice_row.invoice.tax_percentage
+            tax_cost = total_cost * (tax_percantage / float(100))
+        return (total_cost, int(tax_cost))
+
+    grid_invoice = SQLFORM.grid(db((db.invoice.deleted == False) & (db.invoice.customer_id == db.customer.id) & (db.invoice.company_id == db.company.id)),
                                 headers={'invoice.id': 'Fakturanr',
                                          'customer.name': 'Kund',
                                          'company.name': 'Eget företag'},
@@ -49,12 +58,8 @@ def create():
                                 create=False,
                                 details=False,
                                 csv=False,
-                                links=[dict(header='Summa (kr exkl. moms)', body=lambda row: sum(
-                                            [list(r['_extra'].values())[0] for r in db(row.invoice.id == db.invoice_service_mapping.invoice_id)
-                                            .select(db.service.cost_per * db.invoice_service_mapping.quantity)])),
-                                       dict(header='Moms (kr)', body=lambda row: int(sum(
-                                            [list(r['_extra'].values())[0] for r in db(row.invoice.id == db.invoice_service_mapping.invoice_id)
-                                            .select(db.service.cost_per * db.invoice_service_mapping.quantity)]) * (row.invoice.tax_percentage / 100))),
+                                links=[dict(header='Summa (kr exkl. moms)', body=lambda row: count_costs(row)[0]),
+                                       dict(header='Moms (kr)', body=lambda row: count_costs(row)[1]),
                                        lambda row: A('Produkter', _href=URL("invoice", "service_to_invoice",
                                                                             vars={'invoice_id': row.invoice.id})),
                                        lambda row: A('Skriv ut faktura', _href=URL("invoice", "print_invoice",
