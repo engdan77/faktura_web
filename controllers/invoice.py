@@ -1,4 +1,8 @@
 def create():
+    '''
+    create controller for invoices
+    :return:
+    '''
     # This part used when removing items
     if 'remove_id' in request.vars.keys():
         remove_ids = request.vars['remove_id']
@@ -73,6 +77,10 @@ def create():
 
 
 def service_to_invoice():
+    '''
+    controller for associating service to an invoice
+    :return:
+    '''
     # This part used when removing items
     if 'remove_id' in request.vars.keys():
         remove_ids = request.vars['remove_id']
@@ -124,6 +132,10 @@ def service_to_invoice():
 
 
 def print_invoice():
+    '''
+    controller for generating invoice as PDF
+    :return:
+    '''
     from invoice_writer import create_pdf
     import os
     from io import BytesIO

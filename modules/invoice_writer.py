@@ -1,35 +1,12 @@
 def create_pdf(invoice_file, input_dict):
+    '''
+    function for creating pdf
+    :param invoice_file:
+    :param input_dict:
+    :return:
+    '''
     from pyinvoice.models import InvoiceInfo, ServiceProviderInfo, ClientInfo, Item
     from pyinvoice.templates import SimpleInvoice
-
-    # purchased_service = []
-    # purchased_service.append({'name': 'jobb',
-    #                           'quantity': 3,
-    #                           'cost_per': 500})
-    #
-    # d = {'invoice_id': 1,
-    #      'created_on': datetime.now(),
-    #      'expires_on': datetime.now(),
-    #      'tax_percantage': 25,
-    #      'paid': True,
-    #      'company_name': 'Bannes',
-    #      'company_address': 'Holländaregatn 3',
-    #      'company_zip_code': '561 39',
-    #      'company_city': 'Huskvarna',
-    #      'company_phone_number': '0701111122222',
-    #      'company_vat': '555-666',
-    #      'company_account': '9150-77777',
-    #      'company_payment_terms': 30,
-    #      'company_expiration_fee': 10,
-    #      'company_ftax': True,
-    #      'company_email': 'banne@banne.com',
-    #      'customer_id': 55,
-    #      'customer_name': 'Snabel AB',
-    #      'customer_address': 'Snabelgatan 2',
-    #      'customer_zip_code': '171 57',
-    #      'customer_city': 'Solna',
-    #      'item_list': purchased_service}
-
 
     d = input_dict
     print('generating pdf')

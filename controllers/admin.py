@@ -1,4 +1,8 @@
 def export_db_to_csv():
+    '''
+    export database
+    :return:
+    '''
     import os
     from io import BytesIO, StringIO
     import shutil
@@ -15,6 +19,10 @@ def export_db_to_csv():
     return response.stream(BytesIO(data))
 
 def import_and_sync():
+    '''
+    import csv to database
+    :return:
+    '''
     form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit'))
     if form.process().accepted:
         db.import_from_csv_file(form.vars.data.file, unique=False)
@@ -26,12 +34,16 @@ def import_and_sync():
                                          orderby=db[table].modified_on,
                                          groupby=db[table].uuid)
             for item in items:
-                db((db[table].uuid==item.uuid) &
-                   (db[table].id!=item.id)).delete()
+                db((db[table].uuid == item.uuid) &
+                   (db[table].id != item.id)).delete()
     return dict(form=form)
 
 
 def reset_database():
+    '''
+    simple function for resetting database without auth tables
+    :return:
+    '''
     if 'reset' in request.vars.keys():
         exclude = []
         import os
