@@ -1,19 +1,19 @@
 def create():
-    '''
+    """
     create controller for invoices
     :return:
-    '''
+    """
     # This part used when removing items
     if 'remove_id' in request.vars.keys():
         remove_ids = request.vars['remove_id']
-        remove_ids = remove_ids if type(remove_ids) is list else [remove_ids,]
+        remove_ids = remove_ids if type(remove_ids) is list else [remove_ids, ]
         print(remove_ids)
         for row in db(db.invoice.id.belongs(remove_ids)).select():
             row.update_record(deleted=True)
         response.flash = '{} faktur(or) tagits bort'.format(len(remove_ids))
     if 'paid_id' in request.vars.keys():
         paid_ids = request.vars['paid_id']
-        paid_ids = paid_ids if type(paid_ids) is list else [paid_ids,]
+        paid_ids = paid_ids if type(paid_ids) is list else [paid_ids, ]
         for row in db(db.invoice.id.belongs(paid_ids)).select():
             row.update_record(paid=True)
         response.flash = '{} faktur(or) markerats betald'.format(len(paid_ids))
@@ -44,9 +44,10 @@ def create():
             total_cost += cost_per * quantity
             tax_percantage = invoice_row.invoice.tax_percentage
             tax_cost = total_cost * (tax_percantage / float(100))
-        return (total_cost, int(tax_cost))
+        return total_cost, int(tax_cost)
 
-    grid_invoice = SQLFORM.grid(db((db.invoice.deleted == False) & (db.invoice.customer_id == db.customer.id) & (db.invoice.company_id == db.company.id)),
+    grid_invoice = SQLFORM.grid(db((db.invoice.deleted == False) & (db.invoice.customer_id == db.customer.id) & (
+                db.invoice.company_id == db.company.id)),
                                 headers={'invoice.id': 'Fakturanr',
                                          'customer.name': 'Kund',
                                          'company.name': 'Eget företag'},
@@ -54,8 +55,8 @@ def create():
                                                                                  'create',
                                                                                  vars=dict(remove_id=ids)))),
                                             ('Markera betald', lambda ids: redirect(URL('invoice',
-                                                                                 'create',
-                                                                                 vars=dict(paid_id=ids))))],
+                                                                                        'create',
+                                                                                        vars=dict(paid_id=ids))))],
                                 editable=False,
                                 deletable=False,
                                 searchable=False,
@@ -67,7 +68,7 @@ def create():
                                        lambda row: A('Produkter', _href=URL("invoice", "service_to_invoice",
                                                                             vars={'invoice_id': row.invoice.id})),
                                        lambda row: A('Skriv ut faktura', _href=URL("invoice", "print_invoice",
-                                                                            vars={'invoice_id': row.invoice.id}))
+                                                                                   vars={'invoice_id': row.invoice.id}))
                                        ]
                                 )
     [button.__setitem__(0, 'Titta') for button in grid_invoice.elements('span[title=%s]' % T('View'))]
@@ -84,7 +85,7 @@ def service_to_invoice():
     # This part used when removing items
     if 'remove_id' in request.vars.keys():
         remove_ids = request.vars['remove_id']
-        remove_ids = remove_ids if type(remove_ids) is list else [remove_ids,]
+        remove_ids = remove_ids if type(remove_ids) is list else [remove_ids, ]
         for row in db(db.invoice_service_mapping.id.belongs(remove_ids)).select():
             row.delete_record()
         response.flash = '{} produkt(er) tagits bort'.format(len(remove_ids))
@@ -99,7 +100,7 @@ def service_to_invoice():
     form = SQLFORM.factory(db.invoice_service_mapping,
                            formstyle='table3cols',
                            submit_button='Lägg till',
-                            )
+                           )
 
     if form.accepts(request, session):
         db.invoice_service_mapping.insert(**db.invoice_service_mapping._filter_fields(form.vars))
@@ -114,16 +115,17 @@ def service_to_invoice():
     db.invoice_service_mapping.invoice_id.readable = False
     db.invoice_service_mapping.service_id.writable = False
     db.invoice_service_mapping.service_id.readable = False
-    grid_services = SQLFORM.grid(db((db.invoice_service_mapping.invoice_id == invoice_id) & (db.invoice_service_mapping.service_id == db.service.id)),
-                                editable=True,
-                                deletable=False,
-                                searchable=False,
-                                create=False,
-                                csv=False,
-                                selectable=[('Ta bort',
+    grid_services = SQLFORM.grid(db((db.invoice_service_mapping.invoice_id == invoice_id) & (
+                db.invoice_service_mapping.service_id == db.service.id)),
+                                 editable=True,
+                                 deletable=False,
+                                 searchable=False,
+                                 create=False,
+                                 csv=False,
+                                 selectable=[('Ta bort',
                                               lambda ids: redirect(URL('invoice', 'service_to_invoice',
                                                                        vars=dict(remove_id=ids))))]
-                                )
+                                 )
     [button.__setitem__(0, 'Titta') for button in grid_services.elements('span[title=%s]' % T('View'))]
     [button.__setitem__(0, 'Ändra') for button in grid_services.elements('span[title=%s]' % T('Edit'))]
     [button.__setitem__(0, 'Ta bort') for button in grid_services.elements('span[title=%s]' % T('Delete'))]
@@ -144,9 +146,11 @@ def print_invoice():
 
     invoice_id = request.vars['invoice_id']
     response.flash = 'Skriv ut faktura {}'.format(invoice_id)
-    r = db((db.invoice.id == invoice_id) & (db.invoice.company_id == db.company.id) & (db.invoice.customer_id == db.customer.id)).select().first()
+    r = db((db.invoice.id == invoice_id) & (db.invoice.company_id == db.company.id) & (
+                db.invoice.customer_id == db.customer.id)).select().first()
 
-    purchased_services_query = db((db.invoice_service_mapping.service_id == db.service.id) & (db.invoice_service_mapping.invoice_id == invoice_id)).select()
+    purchased_services_query = db((db.invoice_service_mapping.service_id == db.service.id) & (
+                db.invoice_service_mapping.invoice_id == invoice_id)).select()
     purchased_service = []
     for row in purchased_services_query:
         purchased_service.append({'name': row.service.name,
@@ -178,5 +182,5 @@ def print_invoice():
     create_pdf(invoice_file, d)
     data = open(invoice_file, "rb").read()
     response.headers['Content-Type'] = 'application/pdf'
-    #return dict(vars=locals())
+    # return dict(vars=locals())
     return response.stream(BytesIO(data))

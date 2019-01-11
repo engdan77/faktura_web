@@ -1,8 +1,8 @@
 def create():
-    '''
+    """
     create controller for services
     :return:
-    '''
+    """
     form = SQLFORM.factory(db.service, formstyle='table3cols', submit_button='Lägg till').process()
     if form.accepted:
         if not form.vars['name'] == '' and not form.vars['cost_per'] is type(int):

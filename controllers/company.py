@@ -1,8 +1,8 @@
 def create():
-    '''
+    """
     create controller for company
     :return:
-    '''
+    """
     form = SQLFORM(db.company, formstyle='table3cols', submit_button='Lägg till').process()
     if form.accepted:
         response.flash = 'Företag skapad'

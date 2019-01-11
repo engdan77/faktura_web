@@ -4,11 +4,10 @@
 # ## make sure administrator is on localhost
 # ###########################################################
 
-import os
-import socket
-import datetime
 import copy
-import gluon.contenttype
+import datetime
+import socket
+
 import gluon.fileutils
 from gluon._compat import iteritems
 
@@ -155,7 +154,6 @@ def insert():
 
 
 def download():
-    import os
     db = get_database(request)
     return response.download(request, db)
 
@@ -398,12 +396,9 @@ def ccache():
     except ImportError:
         asizeof = False
 
-    import shelve
-    import os
     import copy
     import time
     import math
-    from pydal.contrib import portalocker
 
     ram = {
         'entries': 0,

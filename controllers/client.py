@@ -1,8 +1,8 @@
 def create():
-    '''
+    """
     create controller for client
     :return:
-    '''
+    """
     form = SQLFORM(db.customer, formstyle='table3cols', submit_button='Lägg till').process()
     if form.accepted:
         response.flash = 'Kund skapad'

@@ -54,5 +54,5 @@ class PaidStamp(object):
         canvas.drawString(self.x, self.y, 'Betalad')
         canvas.setLineWidth(4)
         canvas.setLineJoin(1)  # Round join
-        canvas.rect(self.x - .25 * inch, self.y - .25 * inch, width=2*inch, height=inch)
+        canvas.rect(self.x - .25 * inch, self.y - .25 * inch, width=2 * inch, height=inch)
         canvas.restoreState()

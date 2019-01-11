@@ -1,8 +1,8 @@
 def export_db_to_csv():
-    '''
+    """
     export database
     :return:
-    '''
+    """
     import os
     from io import BytesIO, StringIO
     import shutil

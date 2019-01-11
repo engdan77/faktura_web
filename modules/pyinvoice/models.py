@@ -6,6 +6,7 @@ class PDFInfo(object):
     """
     PDF Properties
     """
+
     def __init__(self, title=None, author=None, subject=None):
         """
         PDF Properties
@@ -26,6 +27,7 @@ class InvoiceInfo(object):
     """
     Invoice information
     """
+
     def __init__(self, invoice_id=None, invoice_datetime=None, due_datetime=None, company_expiration_fee=None):
         """
         Invoice info
@@ -64,6 +66,7 @@ class ServiceProviderInfo(AddressInfo):
     """
     Service provider/Merchant information
     """
+
     def __init__(self, name=None, street=None, city=None, state=None, country=None, post_code=None,
                  vat_tax_number=None):
         """
@@ -83,6 +86,7 @@ class ClientInfo(AddressInfo):
     """
     Client/Custom information
     """
+
     def __init__(self, name=None, street=None, city=None, state=None, country=None, post_code=None,
                  email=None, client_id=None):
         """
@@ -104,6 +108,7 @@ class Item(object):
     """
     Product/Item information
     """
+
     def __init__(self, name, description, units, unit_price):
         """
         Item modal init
@@ -131,6 +136,7 @@ class Transaction(object):
     """
     Transaction information
     """
+
     def __init__(self, gateway, transaction_id, transaction_datetime, amount):
         """
         :param gateway: Payment gateway like Paypal, Stripe etc.

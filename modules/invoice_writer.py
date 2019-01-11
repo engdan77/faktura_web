@@ -1,10 +1,10 @@
 def create_pdf(invoice_file, input_dict):
-    '''
+    """
     function for creating pdf
     :param invoice_file:
     :param input_dict:
     :return:
-    '''
+    """
     from pyinvoice.models import InvoiceInfo, ServiceProviderInfo, ClientInfo, Item
     from pyinvoice.templates import SimpleInvoice
 
