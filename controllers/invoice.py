@@ -37,6 +37,7 @@ def create():
 
     def count_costs(invoice_row):
         total_cost = 0
+        tax_cost = 0
         for r in db(db.invoice_service_mapping.invoice_id == invoice_row.invoice.id).select():
             quantity = r.quantity
             service_id = r.service_id
