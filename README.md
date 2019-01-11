@@ -11,8 +11,6 @@ Basic functions
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
 ```bash
 git clone && cd faktura_web
 docker build . --tag faktura_web_image
