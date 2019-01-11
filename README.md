@@ -2,6 +2,11 @@
 
 My father-in-law asked for an easy-to-use application for keep record of invoices for his clients in Swedish, and could not find any so this became a quick project to pull this together that other might find useful as a base foundation.
 
+Basic functions
+* Create company, products, clients
+* Maintain invoice with due-date payments
+* Print invoice as PDF
+
 ![alt faktura_web_demo](https://imgflip.com/gif/2qvlaa)
 
 ## Installation
