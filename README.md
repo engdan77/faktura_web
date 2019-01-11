@@ -7,7 +7,7 @@ Basic functions
 * Maintain invoice with due-date payments
 * Print invoice as PDF
 
-![alt faktura_web_demo](https://imgflip.com/gif/2qvlaa)
+![alt faktura_web_demo](https://i.imgflip.com/2qvlaa.gif)
 
 ## Installation
 
@@ -42,4 +42,4 @@ Please make sure to update tests as appropriate.
 
 ## Database model
 
-![alt db_model](https://imgflip.com/gif/2qvmcb)
+![alt db_model](https://i.imgflip.com/2qvmcb.gif)
