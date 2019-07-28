@@ -156,7 +156,8 @@ def print_invoice():
     for row in purchased_services_query:
         purchased_service.append({'name': row.service.name,
                                   'quantity': row.invoice_service_mapping.quantity,
-                                  'cost_per': row.service.cost_per})
+                                  'cost_per': row.service.cost_per,
+                                  'tax_free': row.service.tax_free})
 
     d = {'invoice_id': r.invoice.id,
          'created_on': r.invoice.created_on,

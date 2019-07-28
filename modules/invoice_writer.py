@@ -35,6 +35,8 @@ def create_pdf(invoice_file, input_dict):
                                  )
 
     for item in d['item_list']:
+        if item['tax_free']:
+            item['name'] += ' (momsfri)'
         doc.add_item(Item(item['name'], '', item['quantity'], item['cost_per']))
 
     # Tax rate, optional

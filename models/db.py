@@ -179,7 +179,8 @@ db.define_table('invoice',
 
 db.define_table('service',
     Field('name', 'string', label='Produkt'),
-    Field('cost_per', 'integer', label='á pris'))
+    Field('cost_per', 'integer', label='á pris'),
+    Field('tax_free', 'boolean', label='Momsfri'))
 
 
 db.define_table('invoice_service_mapping',

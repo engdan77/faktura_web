@@ -187,10 +187,14 @@ class SimpleInvoice(SimpleDocTemplate):
     def _item_raw_data_and_subtotal(self):
         item_data = []
         item_subtotal = 0
+        item_subtotal_no_tax = 0
 
         for item in self._items:
             if not isinstance(item, Item):
                 continue
+
+            if 'momsfri' in item.name:
+                item_subtotal_no_tax += item.amount
 
             item_data.append(
                 (
@@ -203,11 +207,11 @@ class SimpleInvoice(SimpleDocTemplate):
             )
             item_subtotal += item.amount
 
-        return item_data, item_subtotal
+        return item_data, item_subtotal, item_subtotal_no_tax
 
     def _item_data_and_style(self):
         # Items
-        item_data, item_subtotal = self._item_raw_data_and_subtotal()
+        item_data, item_subtotal, item_subtotal_no_tax = self._item_raw_data_and_subtotal()
         style = []
 
         if not item_data:
@@ -237,7 +241,7 @@ class SimpleInvoice(SimpleDocTemplate):
 
         # Tax total
         if self._item_tax_rate is not None:
-            tax_total = item_subtotal * (Decimal(str(self._item_tax_rate)) / Decimal('100'))
+            tax_total = (item_subtotal - item_subtotal_no_tax) * (Decimal(str(self._item_tax_rate)) / Decimal('100'))
             roundtax_total = self.getroundeddecimal(tax_total, self.precision)
             item_data.append(
                 ('Moms ({0}%)'.format(self._item_tax_rate), '', '', '', roundtax_total)
