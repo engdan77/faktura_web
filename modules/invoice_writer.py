@@ -35,18 +35,14 @@ def create_pdf(invoice_file, input_dict):
                                  )
 
     for item in d['item_list']:
-        if item['tax_free']:
-            item['name'] += ' (momsfri)'
+        # if item['tax_free']:
+        #     item['name'] += ' (omvänd skatteskyldighet)'
         doc.add_item(Item(item['name'], '', item['quantity'], item['cost_per']))
 
     # Tax rate, optional
-    doc.set_item_tax_rate(d['tax_percantage'])  # 20%
-
-    # Transactions detail, optional
-    # doc.add_transaction(Transaction('Paypal', 111, datetime.now(), 1))
-    # doc.add_transaction(Transaction('Stripe', 222, date.today(), 2))
+    doc.set_item_tax_rate(d['tax_percantage'])  # 25%
 
     # Optional
     doc.set_bottom_tip(
-        f"Email: {d['company_email']}<br />Kontonummer: {d['company_account']}<br />Godkänd för F-skatt<br />Vid frågor kontakt på {d['company_phone_number']}.")
+        f"Email: {d['company_email']}<br />Kontonummer: {d['company_account']}<br />Godkänd för F-skatt<br />Vid frågor kontakt på {d['company_phone_number']}.<br />{d['extra_info']}")
     doc.finish()

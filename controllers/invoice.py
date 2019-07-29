@@ -180,7 +180,8 @@ def print_invoice():
          'customer_address': r.customer.address,
          'customer_zip_code': r.customer.zip_code,
          'customer_city': r.customer.city,
-         'item_list': purchased_service}
+         'item_list': purchased_service,
+         'extra_info': r.invoice.extra_info}
     create_pdf(invoice_file, d)
     data = open(invoice_file, "rb").read()
     response.headers['Content-Type'] = 'application/pdf'

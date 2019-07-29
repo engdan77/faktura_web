@@ -175,7 +175,8 @@ db.define_table('invoice',
     Field('expires_on', 'date', label='Förfallodatum'),
     Field('tax_percentage', 'integer', label='Moms (%)'),
     Field('paid', 'boolean', label='Betalad'),
-    Field('deleted', 'boolean', label='Mackulerad'))
+    Field('deleted', 'boolean', label='Mackulerad'),
+    Field('extra_info', 'string', label='Extra fotnot'))
 
 db.define_table('service',
     Field('name', 'string', label='Produkt'),
