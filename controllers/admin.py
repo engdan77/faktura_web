@@ -11,7 +11,7 @@ def export_db_to_csv():
     db.export_to_csv_file(s)
     response.headers['Content-Type'] = 'text/csv'
     backup_file = os.path.join(request.folder, 'static', 'backup.csv')
-    with open(backup_file, 'w') as f:
+    with open(backup_file, 'w', encoding='utf-8', newline='') as f:
         s.seek(0)
         shutil.copyfileobj(s, f)
     response.headers['Content-Type'] = 'application/csv'
