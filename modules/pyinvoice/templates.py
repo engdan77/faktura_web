@@ -195,6 +195,7 @@ class SimpleInvoice(SimpleDocTemplate):
 
             if 'momsfri' in item.name:
                 item_subtotal_no_tax += item.amount
+                item.name = item.name.replace('momsfri', '')
 
             item_data.append(
                 (
