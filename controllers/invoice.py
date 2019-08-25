@@ -42,6 +42,8 @@ def create():
             quantity = r.quantity
             service_id = r.service_id
             cost_per = db(db.service.id == service_id).select(db.service.cost_per).first().cost_per
+            if cost_per is None:
+                continue
             total_cost += cost_per * quantity
             tax_percantage = invoice_row.invoice.tax_percentage
             tax_cost = total_cost * (tax_percantage / float(100))
@@ -156,7 +158,7 @@ def print_invoice():
     for row in purchased_services_query:
         purchased_service.append({'name': row.service.name,
                                   'quantity': row.invoice_service_mapping.quantity,
-                                  'cost_per': row.service.cost_per,
+                                  'cost_per': row.service.cost_per if not None else 0,
                                   'tax_free': row.service.tax_free})
 
     d = {'invoice_id': r.invoice.id,
