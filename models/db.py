@@ -187,7 +187,7 @@ db.define_table('service',
 db.define_table('invoice_service_mapping',
     Field('invoice_id', 'reference invoice', label='Fakturanummer'),
     Field('service_id', 'reference service', label='Produkt', requires=IS_IN_DB(db, db.service.id, '%(name)s - %(cost_per)s')),
-    Field('quantity', 'integer', label='Antal'))
+    Field('quantity', 'integer', label='Antal', requires=IS_MATCH('^\d+$', error_message='Du måste sätta antal')))
 
 # add price of invoice
 # db.invoice.total_price = Field.Virtual('total_price', lambda row: db((db.invoice_service_mapping.invoice_id==row.id)).count())
